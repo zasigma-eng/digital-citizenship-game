@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Think Before You Send</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f8fafc, #eef2f7);
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+
+    .hero {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: #475569;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .mini-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .goal-box,
+    .reflection-box {
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 20px;
+    }
+
+    .goal-box {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .goal-box p:last-child,
+    .reflection-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .primary-btn {
+      background: #0f172a;
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: #1e293b;
+    }
+
+    .secondary-btn {
+      background: white;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+    }
+
+    .secondary-btn:hover {
+      background: #f8fafc;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #0f172a;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .scenario-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .scenario-label,
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      border: 1px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .option:hover {
+      border-color: #64748b;
+      transform: translateY(-1px);
+    }
+
+    .option.selected {
+      border-color: #0f172a;
+      background: #f1f5f9;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .option.most-popular {
+      border-color: #fda4af;
+      background: #fff1f2;
+    }
+
+    .option-text {
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .option-side {
+      text-align: right;
+      min-width: 92px;
+      flex-shrink: 0;
+    }
+
+    .popularity {
+      font-weight: bold;
+      color: #475569;
+    }
+
+    .option.most-popular .popularity {
+      color: #be123c;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      background: #ffe4e6;
+      color: #9f1239;
+    }
+
+    .warning-box,
+    .note-box,
+    .insight-box,
+    .positive-box,
+    .negative-box {
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 18px;
+      border: 1px solid transparent;
+    }
+
+    .warning-box {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e;
+    }
+
+    .note-box {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e3a8a;
+    }
+
+    .insight-box {
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .meter {
+      margin-bottom: 16px;
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .meter-track {
+      width: 100%;
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: #0f172a;
+    }
+
+    .majority-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .majority-item {
+      border: 1px solid #fecdd3;
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .majority-title {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .majority-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      flex-wrap: wrap;
+    }
+
+    .toxic {
+      color: #be123c;
+      font-weight: bold;
+    }
+
+    .healthy {
+      color: #047857;
+      font-weight: bold;
+    }
+
+    .positive-box {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .negative-box {
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    .reflection-box {
+      background: #0f172a;
+      color: white;
+    }
+
+    .sidebar-card {
+      position: sticky;
+      top: 24px;
+      height: fit-content;
+    }
+
+    .dashboard-rate {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .dashboard-rate .big-number {
+      font-size: 2.4rem;
+      font-weight: bold;
+      margin: 8px 0 0;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-card {
+        position: static;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .option {
+        flex-direction: column;
+      }
+
+      .option-side {
+        min-width: unset;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <main class="card">
+      <div class="hero">
+        <div class="icon-box">🛡️</div>
+        <div>
+          <h1>Think Before You Send</h1>
+          <p class="subtitle">A digital citizenship game about caution, kindness, and how often toxic responses become the majority online.</p>
+        </div>
+      </div>
+
+      <section id="intro-screen">
+        <div class="grid-3">
+          <div class="mini-card">
+            <h3>Choose a message</h3>
+            <p>Read each internet scenario and pick the message you think people would send or that you would send.</p>
+          </div>
+          <div class="mini-card">
+            <h3>See the statistics</h3>
+            <p>The game tracks offensive choices and compares them to considerate choices.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Notice the majority</h3>
+            <p>Each scenario highlights the option that most people would choose and shows its percentage.</p>
+          </div>
+        </div>
+
+        <div class="goal-box">
+          <div class="section-label" style="color:#cbd5e1;">Goal</div>
+          <p>Avoid offensive responses and reflect on how the internet can normalize toxic behavior when rude or cruel messages become the most popular choice.</p>
+        </div>
+
+        <div class="button-row">
+          <button class="primary-btn" id="start-btn">Start Game</button>
+        </div>
+      </section>
+
+      <section id="game-screen" class="hidden">
+        <div class="progress-meta">
+          <span id="round-text">Round 1 of 5</span>
+          <span id="progress-text">20%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="scenario-box">
+          <div class="scenario-label">Scenario</div>
+          <h2 id="scenario-prompt"></h2>
+          <p>Choose the message you think people might send. The most popular option is highlighted to show what often gets normalized online.</p>
+        </div>
+
+        <div class="options" id="options-container"></div>
+
+        <div class="warning-box hidden" id="warning-box">
+          <p><strong>Reminder:</strong> Words sent online can spread quickly, get screenshotted, and affect real people long after the moment passes.</p>
+          <p><strong>Social pressure check:</strong> The highlighted choice shows what most people would choose in this scenario. If that top choice is toxic, it demonstrates how hostile internet culture can become normalized.</p>
+        </div>
+
+        <div class="note-box" id="scenario-note"></div>
+
+        <div class="button-row">
+          <button class="primary-btn" id="submit-btn">Submit Choice</button>
+          <button class="secondary-btn" id="restart-btn">Restart</button>
+        </div>
+      </section>
+
+      <section id="results-screen" class="hidden">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total selections</div>
+            <div class="stat-value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Offensive selections</div>
+            <div class="stat-value" id="stat-offensive">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Offensive rate</div>
+            <div class="stat-value" id="stat-offensive-rate">0%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Considerate rate</div>
+            <div class="stat-value" id="stat-considerate-rate">0%</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px; margin-bottom:18px;">
+          <h2>Statistical Evaluation</h2>
+          <div class="meter">
+            <div class="meter-head"><span>Offensive selections</span><span id="meter-offensive-label">0%</span></div>
+            <div class="meter-track"><div class="meter-fill" id="meter-offensive"></div></div>
+          </div>
+          <div class="meter">
+            <div class="meter-head"><span>Considerate selections</span><span id="meter-considerate-label">0%</span></div>
+            <div class="meter-track"><div class="meter-fill" id="meter-considerate"></div></div>
+          </div>
+        </div>
+
+        <div class="insight-box" style="margin-bottom:18px;">
+          <h2>What Most People Would Choose</h2>
+          <div class="majority-list" id="majority-list"></div>
+        </div>
+
+        <div class="positive-box">
+          <h3>Why this matters</h3>
+          <p>A lower offensive rate shows stronger digital citizenship. Careful communication supports safer, more respectful online communities.</p>
+        </div>
+
+        <div class="negative-box">
+          <h3>Risk of offensive choices</h3>
+          <p>When offensive messages become common or even the majority choice, cruelty starts to look normal. That is how internet spaces become hostile and unsafe.</p>
+        </div>
+
+        <div class="reflection-box">
+          <h3>Reflection</h3>
+          <p>Before posting, ask: Is it true? Is it necessary? Is it kind? The internet remembers more than we think, so cautious and considerate choices matter.</p>
+          <div class="button-row">
+            <button class="secondary-btn" id="play-again-btn">Play Again</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="card sidebar-card">
+      <h2>Live Dashboard</h2>
+      <p class="subtitle">Tracks how often offensive messages are selected during the game.</p>
+
+      <div class="dashboard-rate">
+        <div class="stat-label">Current offensive rate</div>
+        <div class="big-number" id="dashboard-offensive-rate">0%</div>
+      </div>
+
+      <div class="meter">
+        <div class="meter-head"><span>Offensive</span><span id="dashboard-offensive-count">0</span></div>
+        <div class="meter-track"><div class="meter-fill" id="dashboard-offensive-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="meter">
+        <div class="meter-head"><span>Considerate</span><span id="dashboard-considerate-count">0</span></div>
+        <div class="meter-track"><div class="meter-fill" id="dashboard-considerate-fill" style="width:0%"></div></div>
+      </div>
+
+      <div class="mini-card" style="margin-top:18px;">
+        <h3>What the game teaches</h3>
+        <ul>
+          <li>Pause before sending messages.</li>
+          <li>Critique ideas without insulting people.</li>
+          <li>Choose empathy over humiliation.</li>
+          <li>Think about screenshots, permanence, and consequences.</li>
+          <li>Notice how often the most popular response is still the toxic one.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const scenarios = [
+      {
+        id: 1,
+        prompt: "A class group chat is arguing about a student who made a mistake during a presentation.",
+        messages: [
+          { text: "That was embarrassing. Everyone knows they are so clueless.", offensive: true, popularity: 34 },
+          { text: "Let's not pile on. They were nervous, and mistakes happen.", offensive: false, popularity: 22 },
+          { text: "Maybe we can share some tips for next time instead of making fun of them.", offensive: false, popularity: 16 },
+          { text: "Send the clip around so more people can laugh at it.", offensive: true, popularity: 28 }
+        ],
+        note: "Public shaming and mockery can spread harm fast online."
+      },
+      {
+        id: 2,
+        prompt: "Someone posts a selfie and asks what people think.",
+        messages: [
+          { text: "You looked better before. Delete this.", offensive: true, popularity: 31 },
+          { text: "Nice photo. The lighting is great.", offensive: false, popularity: 26 },
+          { text: "Not my style, but thanks for sharing.", offensive: false, popularity: 18 },
+          { text: "Why would you even post that?", offensive: true, popularity: 25 }
+        ],
+        note: "Honesty does not need cruelty. Respect matters in digital spaces."
+      },
+      {
+        id: 3,
+        prompt: "A friend shares a gaming loss in a server after trying really hard.",
+        messages: [
+          { text: "You always throw the match for everybody.", offensive: true, popularity: 29 },
+          { text: "Tough round. Want to queue again later?", offensive: false, popularity: 24 },
+          { text: "You are actually useless at this game.", offensive: true, popularity: 33 },
+          { text: "We've all had bad rounds. Shake it off.", offensive: false, popularity: 14 }
+        ],
+        note: "Even casual spaces deserve considerate communication."
+      },
+      {
+        id: 4,
+        prompt: "A community page discusses a controversial news topic.",
+        messages: [
+          { text: "Only an idiot would believe that.", offensive: true, popularity: 36 },
+          { text: "I disagree, but I want to understand your view.", offensive: false, popularity: 20 },
+          { text: "Read before commenting. This is nonsense.", offensive: true, popularity: 27 },
+          { text: "Can you share your source?", offensive: false, popularity: 17 }
+        ],
+        note: "Disagreement online should still be civil and evidence-based."
+      },
+      {
+        id: 5,
+        prompt: "A student asks a simple question in an online course forum.",
+        messages: [
+          { text: "Did you even read the instructions?", offensive: true, popularity: 32 },
+          { text: "I think the answer is in section 2. I can point it out.", offensive: false, popularity: 27 },
+          { text: "This question is so dumb.", offensive: true, popularity: 24 },
+          { text: "Lots of people were confused by that part too.", offensive: false, popularity: 17 }
+        ],
+        note: "Digital citizenship includes patience, empathy, and helpfulness."
+      }
+    ];
+
+    let currentRound = 0;
+    let selectedIndex = null;
+    let rounds = [];
+
+    const introScreen = document.getElementById('intro-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const resultsScreen = document.getElementById('results-screen');
+
+    const startBtn = document.getElementById('start-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const playAgainBtn = document.getElementById('play-again-btn');
+
+    const roundText = document.getElementById('round-text');
+    const progressText = document.getElementById('progress-text');
+    const progressFill = document.getElementById('progress-fill');
+    const scenarioPrompt = document.getElementById('scenario-prompt');
+    const optionsContainer = document.getElementById('options-container');
+    const warningBox = document.getElementById('warning-box');
+    const scenarioNote = document.getElementById('scenario-note');
+
+    function getStats() {
+      const totalSelections = rounds.length;
+      const offensiveSelections = rounds.filter(round => round.selected.offensive).length;
+      const nonOffensiveSelections = totalSelections - offensiveSelections;
+      const offensiveRate = totalSelections ? Math.round((offensiveSelections / totalSelections) * 100) : 0;
+      const considerateRate = totalSelections ? Math.round((nonOffensiveSelections / totalSelections) * 100) : 0;
+
+      return {
+        totalSelections,
+        offensiveSelections,
+        nonOffensiveSelections,
+        offensiveRate,
+        considerateRate
+      };
+    }
+
+    function showScreen(screen) {
+      introScreen.classList.add('hidden');
+      gameScreen.classList.add('hidden');
+      resultsScreen.classList.add('hidden');
+      screen.classList.remove('hidden');
+    }
+
+    function updateDashboard() {
+      const stats = getStats();
+      document.getElementById('dashboard-offensive-rate').textContent = stats.offensiveRate + '%';
+      document.getElementById('dashboard-offensive-count').textContent = stats.offensiveSelections;
+      document.getElementById('dashboard-considerate-count').textContent = stats.nonOffensiveSelections;
+      document.getElementById('dashboard-offensive-fill').style.width = stats.offensiveRate + '%';
+      document.getElementById('dashboard-considerate-fill').style.width = stats.considerateRate + '%';
+    }
+
+    function renderRound() {
+      const scenario = scenarios[currentRound];
+      const mostPopularValue = Math.max(...scenario.messages.map(message => message.popularity));
+      const progress = Math.round(((currentRound + 1) / scenarios.length) * 100);
+
+      roundText.textContent = 'Round ' + (currentRound + 1) + ' of ' + scenarios.length;
+      progressText.textContent = progress + '%';
+      progressFill.style.width = progress + '%';
+      scenarioPrompt.textContent = scenario.prompt;
+      scenarioNote.innerHTML = '<strong>Round note:</strong> ' + scenario.note;
+      optionsContainer.innerHTML = '';
+      warningBox.classList.toggle('hidden', selectedIndex === null);
+
+      scenario.messages.forEach((message, index) => {
+        const option = document.createElement('div');
+        option.className = 'option';
+        if (index === selectedIndex) option.classList.add('selected');
+        if (message.popularity === mostPopularValue) option.classList.add('most-popular');
+
+        option.innerHTML = `
+          <div class="option-text">${message.text}</div>
+          <div class="option-side">
+            <div class="popularity">${message.popularity}%</div>
+            ${message.popularity === mostPopularValue ? '<div class="badge">Most chosen</div>' : ''}
+          </div>
+        `;
+
+        option.addEventListener('click', () => {
+          selectedIndex = index;
+          renderRound();
+        });
+
+        optionsContainer.appendChild(option);
+      });
+    }
+
+    function renderResults() {
+      const stats = getStats();
+
+      document.getElementById('stat-total').textContent = stats.totalSelections;
+      document.getElementById('stat-offensive').textContent = stats.offensiveSelections;
+      document.getElementById('stat-offensive-rate').textContent = stats.offensiveRate + '%';
+      document.getElementById('stat-considerate-rate').textContent = stats.considerateRate + '%';
+
+      document.getElementById('meter-offensive-label').textContent = stats.offensiveRate + '%';
+      document.getElementById('meter-considerate-label').textContent = stats.considerateRate + '%';
+      document.getElementById('meter-offensive').style.width = stats.offensiveRate + '%';
+      document.getElementById('meter-considerate').style.width = stats.considerateRate + '%';
+
+      const majorityList = document.getElementById('majority-list');
+      majorityList.innerHTML = '';
+
+      scenarios.forEach((scenario) => {
+        const mostChosen = scenario.messages.reduce((best, current) => {
+          return current.popularity > best.popularity ? current : best;
+        });
+
+        const item = document.createElement('div');
+        item.className = 'majority-item';
+        item.innerHTML = `
+          <div class="majority-title">Scenario ${scenario.id}</div>
+          <div>${mostChosen.text}</div>
+          <div class="majority-footer">
+            <span class="${mostChosen.offensive ? 'toxic' : 'healthy'}">${mostChosen.offensive ? 'Toxic majority choice' : 'Healthy majority choice'}</span>
+            <span><strong>${mostChosen.popularity}%</strong></span>
+          </div>
+        `;
+        majorityList.appendChild(item);
+      });
+    }
+
+    function startGame() {
+      currentRound = 0;
+      selectedIndex = null;
+      rounds = [];
+      updateDashboard();
+      renderRound();
+      showScreen(gameScreen);
+    }
+
+    function restartGame() {
+      showScreen(introScreen);
+      currentRound = 0;
+      selectedIndex = null;
+      rounds = [];
+      updateDashboard();
+    }
+
+    startBtn.addEventListener('click', startGame);
+    restartBtn.addEventListener('click', restartGame);
+    playAgainBtn.addEventListener('click', startGame);
+
+    submitBtn.addEventListener('click', () => {
+      if (selectedIndex === null) {
+        alert('Please choose an option first.');
+        return;
+      }
+
+      const scenario = scenarios[currentRound];
+      rounds.push({
+        scenarioId: scenario.id,
+        selected: scenario.messages[selectedIndex]
+      });
+
+      updateDashboard();
+      selectedIndex = null;
+
+      if (currentRound < scenarios.length - 1) {
+        currentRound += 1;
+        renderRound();
+      } else {
+        renderResults();
+        showScreen(resultsScreen);
+      }
+    });
+
+    updateDashboard();
+  </script>
+</body>
+</html>
